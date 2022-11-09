@@ -73,9 +73,9 @@ public class MoveController : MonoBehaviour
             f += Vector3.right;
         }
 
+        _animator.SetFloat(Speed, f.magnitude);
         _speed = f.normalized;
         if (!(f.magnitude > 0)) return;
-        _animator.SetFloat(Speed, f.magnitude);
         var transform1 = transform;
         transform1.position += transform1.rotation * _speed / 8f;
     }
