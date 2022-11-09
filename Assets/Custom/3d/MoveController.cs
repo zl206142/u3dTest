@@ -52,7 +52,7 @@ public class MoveController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (_air == 0) return;
+        // if (_air == 0) return;
         // transform.Rotate(0, Input.GetAxis("Horizontal"), 0);
         var f = Vector3.zero;
         if (Input.GetKey(KeyCode.W))
