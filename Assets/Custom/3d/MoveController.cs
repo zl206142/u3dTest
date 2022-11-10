@@ -4,7 +4,8 @@ using UnityEngine;
 public class MoveController : MonoBehaviour
 {
     private Rigidbody _rigidbody;
-    private int _air;
+    private int _f_count;
+    private int _t_count;
     private Vector3 _speed;
     private Transform _camera;
     private Animator _animator;
@@ -27,9 +28,9 @@ public class MoveController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.Space) && _air > 0)
+        if (Input.GetKey(KeyCode.Space) && _f_count > 0)
         {
-            _rigidbody.AddForce(transform.rotation * _speed * 5 + new Vector3(0, 10, 0));
+            _rigidbody.AddForce(transform.rotation * _speed * 5 + new Vector3(0, 20, 0));
             _animator.SetTrigger(Jump);
         }
 
@@ -52,7 +53,7 @@ public class MoveController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // if (_air == 0) return;
+        if (_t_count == 0 && _f_count == 0) return;
         // transform.Rotate(0, Input.GetAxis("Horizontal"), 0);
         var f = Vector3.zero;
         if (Input.GetKey(KeyCode.W))
@@ -82,27 +83,27 @@ public class MoveController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        // _air++;
-        // Debug.Log("OnCollisionEnter" + _air);
+        _t_count++;
+        Debug.Log("OnCollisionEnter" + _t_count);
     }
 
     private void OnCollisionExit(Collision other)
     {
-        // _air--;
-        // Debug.Log("OnCollisionExit" + _air);
+        _t_count--;
+        Debug.Log("OnCollisionExit" + _t_count);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        _air++;
-        Debug.Log("OnTriggerEnter" + _air);
+        _f_count++;
+        Debug.Log("OnTriggerEnter" + _f_count);
     }
 
     private void OnTriggerExit(Collider other)
     {
-        _air--;
-        Debug.Log("OnTriggerExit" + _air);
-        if (_air == 0)
+        _f_count--;
+        Debug.Log("OnTriggerExit" + _f_count);
+        if (_f_count == 0)
         {
             _animator.SetTrigger(Fall);
         }
