@@ -4,6 +4,7 @@ using UnityEngine;
 public class UI_Controller : MonoBehaviour
 {
     public Transform health;
+    public ItemsController ItemsController;
 
     private void Awake()
     {
@@ -13,12 +14,17 @@ public class UI_Controller : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        ItemsController.gameObject.SetActive(false);
         StartCoroutine(ChangeHealth());
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            ItemsController.gameObject.SetActive(!ItemsController.gameObject.activeSelf);
+        }
     }
 
     private IEnumerator ChangeHealth()

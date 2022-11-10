@@ -15,13 +15,10 @@ public class PlayerData : MonoBehaviour
     {
         get
         {
-            if (null == _data)
-            {
-                var o = new GameObject("PlayerData");
-                _data = o.AddComponent<PlayerData>();
-                DontDestroyOnLoad(o);
-            }
-
+            if (null != _data) return _data;
+            var o = new GameObject("PlayerData");
+            _data = o.AddComponent<PlayerData>();
+            DontDestroyOnLoad(o);
             return _data;
         }
     }
