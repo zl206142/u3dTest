@@ -8,7 +8,7 @@ public class UI_Controller : MonoBehaviour
 
     private void Awake()
     {
-        health.localScale = new Vector3(PlayerData.Data.health_per, 1, 1);
+        health.localScale = new Vector3(PlayerData.Data.HealthPer, 1, 1);
     }
 
     // Start is called before the first frame update
@@ -29,7 +29,7 @@ public class UI_Controller : MonoBehaviour
 
     private IEnumerator ChangeHealth()
     {
-        while (PlayerData.Data.health_per > 0)
+        while (PlayerData.Data.HealthPer > 0)
         {
             ChangeHealth(-1);
             yield return new WaitForSeconds(2);
@@ -39,6 +39,6 @@ public class UI_Controller : MonoBehaviour
     private void ChangeHealth(int value)
     {
         PlayerData.Data.ChangeHealth(value);
-        health.localScale = new Vector3(PlayerData.Data.health_per, 1, 1);
+        health.localScale = new Vector3(PlayerData.Data.HealthPer, 1, 1);
     }
 }

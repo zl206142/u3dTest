@@ -1,9 +1,10 @@
 using System.Collections.Generic;
-using UnityEngine.Events;
+
+public delegate void MyAction(params object[] args);
 
 public class EventManager
 {
-    private readonly Dictionary<string, UnityEvent> evs = new Dictionary<string, UnityEvent>();
+    private readonly Dictionary<string, MyAction> _evs = new();
 
     private static EventManager _instance;
 
@@ -22,45 +23,44 @@ public class EventManager
         }
     }
 
-    public void AddEventListener(string eventName, UnityAction action)
+    public void AddEventListener(string eventName, MyAction action)
     {
-        if (evs.TryGetValue(eventName, out var a))
+        if (_evs.TryGetValue(eventName, out var a))
         {
-            a.AddListener(action);
+            a += action;
+            _evs.Add(eventName, a);
         }
         else
         {
-            var evt = new UnityEvent();
-            evt.AddListener(action);
-            evs.Add(eventName, evt);
+            _evs.Add(eventName, action);
         }
     }
 
-    public void DispatchEvent(string eventName)
+    public void DispatchEvent(string eventName, params object[] args)
     {
-        if (evs.TryGetValue(eventName, out var a))
+        if (_evs.TryGetValue(eventName, out var a))
         {
-            a.Invoke();
+            a.Invoke(args);
         }
     }
 
     public void RemoveEventListeners(string eventName)
     {
-        evs.Remove(eventName);
+        _evs.Remove(eventName);
     }
 
-    public void RemoveEventListeners(string eventName, UnityAction action)
+    public void RemoveEventListeners(string eventName, MyAction action)
     {
-        if (!evs.TryGetValue(eventName, out var unityEvent)) return;
-        unityEvent.RemoveListener(action);
-        if (unityEvent.GetPersistentEventCount() == 0)
+        if (!_evs.TryGetValue(eventName, out var unityEvent)) return;
+        unityEvent -= action;
+        if (unityEvent.GetInvocationList().Length == 0)
         {
-            evs.Remove(eventName);
+            _evs.Remove(eventName);
         }
     }
 
     public void RemoveAllEventListeners()
     {
-        evs.Clear();
+        _evs.Clear();
     }
 }

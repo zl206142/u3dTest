@@ -4,7 +4,7 @@ public class ItemInfo : MonoBehaviour
 {
     private void Awake()
     {
-        EventManager.Instance.AddEventListener("evt_open_item_info", () => { gameObject.SetActive(true); });
+        EventManager.Instance.AddEventListener("evt_open_item_info", a => { gameObject.SetActive(true); });
         gameObject.SetActive(false);
     }
 
