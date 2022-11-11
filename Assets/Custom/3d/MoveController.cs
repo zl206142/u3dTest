@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class MoveController : MonoBehaviour
@@ -14,6 +13,7 @@ public class MoveController : MonoBehaviour
     private static readonly int Fall = Animator.StringToHash("fall");
     private static readonly int Speed = Animator.StringToHash("speed");
 
+    public Transform model;
     public float MoveSpeed = 1;
     public float MouseXSpeed = 1;
     public float MouseYSpeed = 1;
@@ -33,25 +33,14 @@ public class MoveController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && _f_count > 0)
+        if (Input.GetKeyDown(KeyCode.Space) && _f_count > 0 && _t_count > 0)
         {
             Debug.Log("GetKeyDown Space");
-            _rigidbody.AddForce(transform.rotation * _speed * 40 + new Vector3(0, 400, 0));
+            _rigidbody.AddForce(transform.rotation * _speed * 40 + new Vector3(0, 300, 0));
         }
 
 
         _speed_up = Input.GetKey(KeyCode.LeftShift);
-        // if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
-        // {
-        //     Cursor.lockState = CursorLockMode.Locked;
-        //     Cursor.visible = false;
-        // }
-        //
-        // if (Input.GetKeyDown("escape"))
-        // {
-        //     Cursor.lockState = CursorLockMode.Locked;
-        //     Cursor.visible = true;
-        // }
 
         if (Cursor.visible) return;
         _camera.parent.transform.Rotate(-Input.GetAxis("Mouse Y") * MouseYSpeed, 0, 0);
@@ -82,10 +71,13 @@ public class MoveController : MonoBehaviour
         }
 
         f.Normalize();
+        if (f.z < 0) f /= 2;
         _animator.SetFloat(Speed, f.magnitude);
         f = _speed = f * MoveSpeed * (_speed_up ? 2 : 1);
         f *= Time.fixedDeltaTime;
         if (f.magnitude <= 0) return;
+        model.localRotation =
+            Quaternion.Euler(0, (f.x > 0 ? 90 : f.x < 0 ? -90 : 0) * (f.z > 0 ? 0.5f : f.z < 0 ? -0.5f : 1), 0);
         var transform1 = transform;
         transform1.position += transform1.rotation * f;
     }

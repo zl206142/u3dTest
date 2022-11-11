@@ -29,4 +29,9 @@ public class ItemsController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
+
+    public void Close()
+    {
+        gameObject.SetActive(false);
+    }
 }
