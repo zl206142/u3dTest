@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BagSlot : MonoBehaviour
@@ -12,6 +10,7 @@ public class BagSlot : MonoBehaviour
     {
         if (_item || !item) return false;
         _item = item;
+        _item.slot = this;
         Transform transform1;
         (transform1 = _item.transform).SetParent(transform);
         transform1.localPosition = Vector3.zero;
